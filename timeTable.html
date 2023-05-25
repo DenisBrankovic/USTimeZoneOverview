@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>US Time Table</title>
+	<style>
+		body{
+			margin: 0;
+			padding: 0;
+		}
+		header{
+			background: darkblue;
+			height: 10vh;
+			width: 100vw;
+			display: flex;
+			align-items: center;
+			justify-content: space-around; 
+		}
+		button{
+			background: transparent;
+			color: white; 
+			height: 50%;
+			width: 15%;
+			transition: ease 0.5s all; 
+		}
+		button:hover{
+			background: #ff3333;
+		}
+		h2{
+			color: yellow;
+			margin: 0; 
+		}
+		p{
+			color: white;
+			font-family: fantasy;
+			font-size: 130%;
+		}
+		#wrapper{
+			width: 100vw;
+			display: flex;
+			flex-direction: column;
+		}
+		.state{
+			width: 100%;
+			height: 8%;
+			display: flex;
+			justify-content: space-around; 
+			margin-top: 1px;
+			background: #48486a; 
+		}
+		.state6{
+			width: 100%;
+			height: 8%;
+			display: flex;
+			justify-content: space-around; 
+			margin-top: 1px;
+			background: #ff8533; 
+		}
+		.state7{
+			width: 100%;
+			height: 8%;
+			display: flex;
+			justify-content: space-around; 
+			margin-top: 1px;
+			background: #ff751a;
+		}
+		.state8{
+			width: 100%;
+			height: 8%;
+			display: flex;
+			justify-content: space-around; 
+			margin-top: 1px;
+			background: #cc5200; 
+		}
+		.state9{
+			width: 100%;
+			height: 8%;
+			display: flex;
+			justify-content: space-around; 
+			margin-top: 1px;
+			background: #ff751a; 
+		}
+		.state10{
+			width: 100%;
+			height: 8%;
+			display: flex;
+			justify-content: space-around; 
+			margin-top: 1px;
+			background: #ff8533; 
+		}
+		.data{
+			width: 20%; 
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h2>US Current Time</h2>
+		<button>Refresh Time</button>
+	</header>
+	<div id="wrapper">
+
+	</div>
+	
+	<script>
+		var d = new Date(); 
+		var central = d.toLocaleString('en-US', { timeZone: 'US/Central' });
+		var alaska = d.toLocaleString('en-US', { timeZone: 'US/Alaska' });
+		var mountain = d.toLocaleString('en-US', { timeZone: 'US/Mountain' });
+		var pacific = d.toLocaleString('en-US', { timeZone: 'US/Pacific' });
+		var eastern = d.toLocaleString('en-US', { timeZone: 'US/Eastern' });
+		var hawaii = d.toLocaleString('en-US', { timeZone: 'US/Hawaii' });
+
+
+		const states = [
+			{state: "Alabama", timeZone: central},
+			{state: "Alaska", timeZone: alaska, timeZone2: hawaii},
+			{state: "Arizona", timeZone: mountain},
+			{state: "Arkanzas", timeZone: central},
+			{state: "California", timeZone: pacific},
+			{state: "Colorado", timeZone: mountain},
+			{state: "Connecticut", timeZone: eastern},
+			{state: "Delaware", timeZone: eastern},
+			{state: "Florida", timeZone: eastern, timeZone2: central},
+			{state: "Georgia", timeZone: eastern},
+			{state: "Hawaii", timeZone: hawaii},
+			{state: "Idaho", timeZone: mountain, timeZone2: pacific},
+			{state: "Illinois", timeZone: central},
+			{state: "Indiana", timeZone: eastern, timeZone2: central},
+			{state: "Iowa", timeZone: central},
+			{state: "Kansas", timeZone: central, timeZone2: mountain},
+			{state: "Kentucky", timeZone: eastern, timeZone2: central},
+			{state: "Louisiana", timeZone: central},
+			{state: "Maine", timeZone: eastern},
+			{state: "Maryland", timeZone: eastern},
+			{state: "Massachusetts", timeZone: eastern},
+			{state: "Michigan", timeZone: eastern, timeZone2: central},
+			{state: "Minnesota", timeZone: central},
+			{state: "Mississippi", timeZone: central},
+			{state: "Missouri", timeZone: central},
+			{state: "Montana", timeZone: mountain},
+			{state: "Nebraska", timeZone: central, timeZone2: mountain},
+			{state: "Nevada", timeZone: mountain, timeZone2: pacific},
+			{state: "New Hampshire", timeZone: eastern},
+			{state: "New Jersey", timeZone: eastern},
+			{state: "New Mexico", timeZone: mountain},
+			{state: "New York", timeZone: eastern},
+			{state: "North Carolina", timeZone: eastern},
+			{state: "North Dakota", timeZone: central, timeZone2: mountain},
+			{state: "Ohio", timeZone: eastern},
+			{state: "Oklahoma", timeZone: central},
+			{state: "Oregon", timeZone: mountain, timeZone2: pacific},
+			{state: "Pennsylvania", timeZone: eastern},
+			{state: "Rhode Island", timeZone: eastern},
+			{state: "South Carolina", timeZone: eastern},
+			{state: "South Dakota", timeZone: central, timeZone2: mountain},
+			{state: "Tennessee", timeZone: eastern, timeZone2: central},
+			{state: "Texas", timeZone: central, timeZone2: mountain},
+			{state: "Utah", timeZone: mountain},
+			{state: "Vermont", timeZone: eastern},
+			{state: "Virginia", timeZone: eastern},
+			{state: "Washington", timeZone: pacific},
+			{state: "West Virginia", timeZone: eastern},
+			{state: "Wisconsin", timeZone: central},
+			{state: "Wyoming", timeZone: mountain}
+		];
+
+
+		states.sort((a, b) => (a.timeZone > b.timeZone) ? -1 : 1); 
+
+		var getWrapper = document.getElementById("wrapper"); 
+				
+		
+		for(var st of states){
+			var state = document.createElement("div");
+			var stateNameDiv = document.createElement("div");
+			var stateTimeDiv = document.createElement("div");
+			var secondTimeZoneDiv = document.createElement("div");
+
+			var stateName = document.createElement("p");
+			var currentStateTime = document.createElement("p");
+			var secondTimeZone = document.createElement("p");
+
+			stateName.innerHTML = st.state;
+			st.timeZone = formatUsDate(st.timeZone);
+			currentStateTime.innerHTML = st.timeZone;
+			 
+			if(st.timeZone2){
+				st.timeZone2 = formatUsDate(st.timeZone2); 
+				secondTimeZone.innerHTML = st.timeZone2;
+			}  
+
+			stateNameDiv.appendChild(stateName); 
+			stateTimeDiv.appendChild(currentStateTime);
+			secondTimeZoneDiv.appendChild(secondTimeZone);
+			
+			state.appendChild(stateNameDiv);
+			state.appendChild(stateTimeDiv);
+			state.appendChild(secondTimeZoneDiv);
+
+			state.classList.add("state");		
+			
+			changeBackground();
+
+			stateNameDiv.classList.add("data");
+			stateTimeDiv.classList.add("data");
+			secondTimeZoneDiv.classList.add("data"); 
+			getWrapper.appendChild(state);
+		}
+
+		var getButton = document.querySelector("button");
+		getButton.addEventListener("click", refresh); 
+
+		function refresh(){
+			location.reload(); 
+		}
+
+
+		
+		function getSpecifiedTime(date, time){
+			var dateArray = date.split(" ");
+			var dateOnly = dateArray[0];
+			var timeOnly = time; 
+			 
+			return dateOnly + " " + timeOnly + " " + "PM"; 
+		}	
+		
+
+		function changeBackground(){
+			var currentTime = new Date(); 
+			var usTime = currentTime.toLocaleString('en-US', { timeZone: 'US/Eastern' }); 
+			
+			var six = getSpecifiedTime(usTime, "06:00:00 PM"); 
+			var seven = getSpecifiedTime(usTime, "07:00:00 PM");
+			var eight = getSpecifiedTime(usTime, "08:00:00 PM");
+			var nine = getSpecifiedTime(usTime, "09:00:00 PM");
+			var ten = getSpecifiedTime(usTime, "10:00:00 PM");
+			var eleven = getSpecifiedTime(usTime, "11:00:00 PM"); 
+			
+			six = formatUsDate(six);
+			seven = formatUsDate(seven);
+			eight = formatUsDate(eight);
+			nine = formatUsDate(nine);
+			ten = formatUsDate(ten);
+			eleven = formatUsDate(eleven);	
+			
+			if(st.timeZone > six && st.timeZone < seven){
+				state.classList = []; 
+				state.classList.add("state6");
+			}else if(st.timeZone > seven && st.timeZone < eight){ 
+				state.classList = []; 
+				state.classList.add("state7");
+			}else if(st.timeZone > eight && st.timeZone < nine){ 
+				state.classList = []; 
+				state.classList.add("state8"); 
+			}else if(st.timeZone > nine && st.timeZone < ten){ 
+				state.classList = []; 
+				state.classList.add("state9");
+			}else if(st.timeZone > ten && st.timeZone < eleven){
+				state.classList = []; 
+				state.classList.add("state10");
+			}else{
+				state.classList = [];
+				state.classList.add("state");
+			}
+		 }
+
+		 function formatUsDate(date){
+			var dateArray = date.split(",");
+			var dateInConstruction = dateArray[0].split("/");
+
+			var zero = "0";
+
+			var month = dateInConstruction[0].length < 2 ? zero +dateInConstruction[0] : dateInConstruction[0];
+			var day = dateInConstruction[1].length < 2 ? zero +dateInConstruction[1] : dateInConstruction[1];
+
+			var dateOnly = dateInConstruction[2] + "-" + month + "-" + day;
+
+			var timeInConstruction = dateArray[1].split(" ");
+			
+			var timeInitial = timeInConstruction[1];
+			var hoursInitial = timeInitial.split(":");
+			
+			
+			var minutes = hoursInitial[1];
+			var seconds = hoursInitial[2];
+
+			if(timeInConstruction[2] == "PM" && hoursInitial[0] < 12){
+				var realHoursInitial = parseInt(hoursInitial[0]);
+				realHoursInitial += 12;
+			}else if(timeInConstruction[2] == "AM" && hoursInitial[0] == 12){
+				realHoursInitial = "00";
+			}else{
+				realHoursInitial = hoursInitial[0];
+			}
+
+			 var hours = realHoursInitial.length < 2 ? zero + realHoursInitial : realHoursInitial;
+
+			var timeOnly = hours + ":" + minutes + ":" + seconds;
+
+			var completeDate = dateOnly + " " + timeOnly; 
+
+			return completeDate; 
+		}
+		
+	</script>
+</body>
+</html>
